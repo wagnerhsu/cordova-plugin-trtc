@@ -1,0 +1,32 @@
+{
+  "name": "cordova-plugin-trtc",
+  "version": "1.0.0",
+  "description": "Cordova Plugin for Tencent TRTC",
+  "bundleDependencies": false,
+  "cordova": {
+    "id": "cordova-plugin-trtc",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hankersyan/cordova-plugin-trtc.git"
+  },
+  "keywords": [
+    "cordova:plugin",
+    "trtc",
+    "webrtc",
+    "videocall",
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios"
+  ],
+  "author": "hankers.yan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hankersyan/cordova-plugin-trtc/issues"
+  },
+  "homepage": "https://github.com/hankersyan/cordova-plugin-trtc#readme"
+}

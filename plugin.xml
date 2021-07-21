@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="cordova-plugin-trtc" version="1.0.0">
+	<name>TRTC</name>
+	<description>Cordova Plugin for Tencent TRTC</description>
+	<license>MIT</license>
+	<keywords>cordova,trtc,webrtc,videocall,qcloud,tencent</keywords>
+	<js-module src="www/trtc.js" name="TRTC">
+		<clobbers target="TRTC" />
+	</js-module>
+    <engines>
+        <engine name="cordova" version=">=3.0.0"/>
+    </engines>
+    <preference name="SDKAPPID" />
+	<platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="TRTC">
+                <param name="android-package" value="io.hankers.trtc.TRTC"/>
+            </feature>
+        </config-file>
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <activity android:name="io.hankers.trtc.VideoCallingActivity" android:screenOrientation="portrait"/>
+        </config-file>
+		<config-file target="AndroidManifest.xml" parent="/manifest">
+			<uses-permission android:name="android.permission.INTERNET" />
+			<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+			<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+			<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+			<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+			<uses-permission android:name="android.permission.RECORD_AUDIO" />
+			<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+			<uses-permission android:name="android.permission.BLUETOOTH" />
+			<uses-permission android:name="android.permission.CAMERA" />
+			<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+			<uses-feature android:name="android.hardware.camera" />
+			<uses-feature android:name="android.hardware.camera.autofocus" />
+		</config-file>
+		<framework src="com.tencent.liteav:LiteAVSDK_TRTC:latest.release" />
+		<source-file src="src/android/io/hankers/trtc/TRTC.java" target-dir="src/io/hankers/trtc/" />
+		<source-file src="src/android/io/hankers/trtc/Constant.java" target-dir="src/io/hankers/trtc/" />
+		<source-file src="src/android/io/hankers/trtc/TRTCBaseActivity.java" target-dir="src/io/hankers/trtc/" />
+		<source-file src="src/android/io/hankers/trtc/VideoCallingActivity.java" target-dir="src/io/hankers/trtc/" />
+		<resource-file src="src/android/res/layout/trtc_videocall_activity.xml" target="res/layout/trtc_videocall_activity.xml" />
+		<resource-file src="src/android/res/drawable-port-xxhdpi/common_button_bg.xml" target="res/drawable-port-xxhdpi/common_button_bg.xml" />
+		<resource-file src="src/android/res/drawable-port-xxhdpi/microphone_state_enable.xml" target="res/drawable-port-xxhdpi/microphone_state_enable.xml" />
+		<resource-file src="src/android/res/mipmap-xxhdpi/trtc_camerachange.png" target="res/mipmap-xxhdpi/trtc_camerachange.png" />
+		<resource-file src="src/android/res/mipmap-xxhdpi/trtc_exit.png" target="res/mipmap-xxhdpi/trtc_exit.png" />
+		<resource-file src="src/android/res/mipmap-xxhdpi/trtc_videoon.png" target="res/mipmap-xxhdpi/trtc_videoon.png" />
+		<resource-file src="src/android/res/mipmap-xxhdpi/trtc_videooff.png" target="res/mipmap-xxhdpi/trtc_videooff.png" />
+		<resource-file src="src/android/res/mipmap-xxhdpi/trtc_voiceoff.png" target="res/mipmap-xxhdpi/trtc_voiceoff.png" />
+		<resource-file src="src/android/res/mipmap-xxhdpi/trtc_voiceon.png" target="res/mipmap-xxhdpi/trtc_voiceon.png" />
+		<resource-file src="src/android/res/values/trtc-colors.xml" target="res/values/trtc-colors.xml" />
+		<resource-file src="src/android/res/values/trtc-strings.xml" target="res/values/trtc-strings.xml" />
+	</platform>
+</plugin>
