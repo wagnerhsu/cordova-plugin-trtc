@@ -408,10 +408,9 @@ public class VideoCallingActivity extends TRTCBaseActivity implements View.OnCli
 
                 mGridLayout.addView(mTXCVVLocalPreviewView, 0);
 
-                for(int i=0; i<3; i++) {
-                    TXCloudVideoView v = (TXCloudVideoView)mRemoteViewList.get(i);
-                    mGridLayout.addView(v, i+1);
-                }
+                mGridLayout.addView(mRemoteViewList.get(1), 1);
+                mGridLayout.addView(mRemoteViewList.get(0), 2);
+                mGridLayout.addView(mRemoteViewList.get(2), 3);
             }
         });
     }
