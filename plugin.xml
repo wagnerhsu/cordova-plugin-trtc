@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="cordova-plugin-trtc" version="1.0.0">
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="cordova-plugin-trtc" version="1.0.1">
 	<name>TRTC</name>
 	<description>Cordova Plugin for Tencent TRTC</description>
 	<license>MIT</license>
@@ -18,7 +18,7 @@
             </feature>
         </config-file>
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
-            <activity android:name="io.hankers.trtc.VideoCallingActivity" android:screenOrientation="portrait"/>
+            <activity android:name="io.hankers.trtc.VideoCallingActivity" android:launchMode="singleTask" android:screenOrientation="portrait"/>
         </config-file>
 		<config-file target="AndroidManifest.xml" parent="/manifest">
 			<uses-permission android:name="android.permission.INTERNET" />
@@ -40,14 +40,17 @@
 		<source-file src="src/android/io/hankers/trtc/TRTCBaseActivity.java" target-dir="src/io/hankers/trtc/" />
 		<source-file src="src/android/io/hankers/trtc/VideoCallingActivity.java" target-dir="src/io/hankers/trtc/" />
 		<resource-file src="src/android/res/layout/trtc_videocall_activity.xml" target="res/layout/trtc_videocall_activity.xml" />
-		<resource-file src="src/android/res/drawable-port-xxhdpi/common_button_bg.xml" target="res/drawable-port-xxhdpi/common_button_bg.xml" />
-		<resource-file src="src/android/res/drawable-port-xxhdpi/microphone_state_enable.xml" target="res/drawable-port-xxhdpi/microphone_state_enable.xml" />
-		<resource-file src="src/android/res/mipmap-xxhdpi/trtc_camerachange.png" target="res/mipmap-xxhdpi/trtc_camerachange.png" />
-		<resource-file src="src/android/res/mipmap-xxhdpi/trtc_exit.png" target="res/mipmap-xxhdpi/trtc_exit.png" />
-		<resource-file src="src/android/res/mipmap-xxhdpi/trtc_videoon.png" target="res/mipmap-xxhdpi/trtc_videoon.png" />
-		<resource-file src="src/android/res/mipmap-xxhdpi/trtc_videooff.png" target="res/mipmap-xxhdpi/trtc_videooff.png" />
-		<resource-file src="src/android/res/mipmap-xxhdpi/trtc_voiceoff.png" target="res/mipmap-xxhdpi/trtc_voiceoff.png" />
-		<resource-file src="src/android/res/mipmap-xxhdpi/trtc_voiceon.png" target="res/mipmap-xxhdpi/trtc_voiceon.png" />
+		<resource-file src="src/android/res/mipmap-xhdpi/camera_switch_end.png" target="res/mipmap-xhdpi/camera_switch_end.png" />
+		<resource-file src="src/android/res/mipmap-xhdpi/camera_switch_front.png" target="res/mipmap-xhdpi/camera_switch_front.png" />
+		<resource-file src="src/android/res/mipmap-xhdpi/close_phone.png" target="res/mipmap-xhdpi/close_phone.png" />
+		<resource-file src="src/android/res/mipmap-xhdpi/face_beauty_close.png" target="res/mipmap-xhdpi/face_beauty_close.png" />
+		<resource-file src="src/android/res/mipmap-xhdpi/face_beauty_open.png" target="res/mipmap-xhdpi/face_beauty_open.png" />
+		<resource-file src="src/android/res/mipmap-xhdpi/loudspeaker.png" target="res/mipmap-xhdpi/loudspeaker.png" />
+		<resource-file src="src/android/res/mipmap-xhdpi/loudspeaker_disable.png" target="res/mipmap-xhdpi/loudspeaker_disable.png" />
+		<resource-file src="src/android/res/mipmap-xhdpi/microphone.png" target="res/mipmap-xhdpi/microphone.png" />
+		<resource-file src="src/android/res/mipmap-xhdpi/microphone_disable.png" target="res/mipmap-xhdpi/microphone_disable.png" />
+		<resource-file src="src/android/res/mipmap-xhdpi/video_close.png" target="res/mipmap-xhdpi/video_close.png" />
+		<resource-file src="src/android/res/mipmap-xhdpi/video_open.png" target="res/mipmap-xhdpi/video_open.png" />
 		<resource-file src="src/android/res/values/trtc-colors.xml" target="res/values/trtc-colors.xml" />
 		<resource-file src="src/android/res/values/trtc-strings.xml" target="res/values/trtc-strings.xml" />
 	</platform>

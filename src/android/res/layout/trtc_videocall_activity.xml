@@ -10,7 +10,6 @@
 
     <GridLayout
         android:id="@+id/grid"
-        android:layout_above="@id/tool_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:columnCount="3"
@@ -46,6 +45,7 @@
 
         <com.tencent.rtmp.ui.TXCloudVideoView
             android:id="@+id/trtc_view_5"
+            android:visibility="visible"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             android:layout_width="0dp"
@@ -53,6 +53,7 @@
 
         <com.tencent.rtmp.ui.TXCloudVideoView
             android:id="@+id/trtc_view_6"
+            android:visibility="visible"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             android:layout_width="0dp"
@@ -60,6 +61,7 @@
 
         <com.tencent.rtmp.ui.TXCloudVideoView
             android:id="@+id/trtc_view_7"
+            android:visibility="visible"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             android:layout_width="0dp"
@@ -67,6 +69,7 @@
 
         <com.tencent.rtmp.ui.TXCloudVideoView
             android:id="@+id/trtc_view_8"
+            android:visibility="visible"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             android:layout_width="0dp"
@@ -74,6 +77,7 @@
 
         <com.tencent.rtmp.ui.TXCloudVideoView
             android:id="@+id/trtc_view_9"
+            android:visibility="visible"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             android:layout_width="0dp"
@@ -91,75 +95,61 @@
         android:layout_marginBottom="20dp"
         android:layout_marginTop="30dp"
         android:orientation="vertical">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/videocall_video_item"
-            android:textColor="#ff0000"
-            android:textSize="16sp"/>
 
         <LinearLayout
-            android:id="@+id/ll_controller"
-            android:layout_width="300dp"
+            android:id="@+id/tool_btns"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:visibility="visible">
 
-            <Button
-                android:id="@+id/btn_switch_camera"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/common_button_bg"
-                android:padding="5dp"
-                android:text="@string/videocall_user_back_camera"
-                android:textColor="@android:color/white" />
-
-            <Button
+            <ImageButton
                 android:id="@+id/btn_mute_video"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginLeft="10dp"
-                android:layout_gravity="center_horizontal"
-                android:padding="5dp"
-                android:text="@string/videocall_close_camera"
-                android:textColor="@android:color/white"
-                android:background="@drawable/common_button_bg" />
-        </LinearLayout>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/videocall_audio_item"
-            android:layout_marginTop="20dp"
-            android:textColor="#ff0000"
-            android:textSize="16sp"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:visibility="visible">
+                android:src="@mipmap/video_open"
+                android:scaleType="fitCenter"
+                android:background="@android:color/transparent"
+                android:layout_marginRight="10dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/btn_mute_audio"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_gravity="center_horizontal"
-                android:padding="5dp"
-                android:text="@string/videocall_close_mute_audio"
-                android:textColor="@android:color/white"
-                android:background="@drawable/common_button_bg" />
+                android:src="@mipmap/microphone"
+                android:scaleType="fitCenter"
+                android:background="@android:color/transparent"
+                android:layout_marginRight="10dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp" />
 
-            <Button
-                android:id="@+id/btn_audio_route"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginLeft="10dp"
-                android:layout_gravity="center_horizontal"
-                android:padding="5dp"
-                android:text="@string/videocall_use_receiver"
-                android:textColor="@android:color/white"
-                android:background="@drawable/common_button_bg" />
+            <ImageButton
+                android:id="@+id/btn_exit"
+                android:src="@mipmap/close_phone"
+                android:scaleType="fitCenter"
+                android:background="@android:color/transparent"
+                android:layout_marginRight="10dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp" />
+
+            <ImageButton
+                android:id="@+id/btn_mute_speaker"
+                android:src="@mipmap/loudspeaker"
+                android:scaleType="fitCenter"
+                android:background="@android:color/transparent"
+                android:layout_marginRight="10dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp" />
+
+            <ImageButton
+                android:id="@+id/btn_switch_camera"
+                android:src="@mipmap/camera_switch_front"
+                android:scaleType="fitCenter"
+                android:background="@android:color/transparent"
+                android:layout_width="48dp"
+                android:layout_height="48dp" />
+
         </LinearLayout>
+
     </LinearLayout>
 
 </RelativeLayout>

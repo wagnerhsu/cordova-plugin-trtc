@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.GridLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,10 +67,12 @@ public class VideoCallingActivity extends TRTCBaseActivity implements View.OnCli
     private TextView                        mTextTitle;
     private TXCloudVideoView                mTXCVVLocalPreviewView;
     private ImageView                       mImageBack;
-    private Button                          mButtonMuteVideo;
-    private Button                          mButtonMuteAudio;
-    private Button                          mButtonSwitchCamera;
-    private Button                          mButtonAudioRoute;
+    private ImageButton                     mButtonMuteVideo;
+    private ImageButton                     mButtonMuteAudio;
+    private ImageButton                     mButtonSwitchCamera;
+    private ImageButton                     mButtonMuteSpeaker;
+    private GridLayout                      mGridLayout;
+    private ImageButton                     mBtnExit;
 
     private TRTCCloud                       mTRTCCloud;
     private TXDeviceManager                 mTXDeviceManager;
@@ -131,7 +135,8 @@ public class VideoCallingActivity extends TRTCBaseActivity implements View.OnCli
         mButtonMuteVideo = findViewById(TRTC.getResourceId("btn_mute_video", "id"));
         mButtonMuteAudio = findViewById(TRTC.getResourceId("btn_mute_audio", "id"));
         mButtonSwitchCamera = findViewById(TRTC.getResourceId("btn_switch_camera", "id"));
-        mButtonAudioRoute = findViewById(TRTC.getResourceId("btn_audio_route", "id"));
+        mButtonMuteSpeaker = findViewById(TRTC.getResourceId("btn_mute_speaker", "id"));
+        mBtnExit = findViewById(TRTC.getResourceId("btn_exit", "id"));
 
 //        if (!TextUtils.isEmpty(mRoomId)) {
 //            mTextTitle.setText(getString(TRTC.getResourceId("videocall_roomid", "string")) + mRoomId);
@@ -140,7 +145,8 @@ public class VideoCallingActivity extends TRTCBaseActivity implements View.OnCli
         mButtonMuteVideo.setOnClickListener(this);
         mButtonMuteAudio.setOnClickListener(this);
         mButtonSwitchCamera.setOnClickListener(this);
-        mButtonAudioRoute.setOnClickListener(this);
+        mButtonMuteSpeaker.setOnClickListener(this);
+        mBtnExit.setOnClickListener(this);
 
         mRemoteUidList = new ArrayList<>();
         mRemoteViewList = new ArrayList<>();
@@ -155,6 +161,9 @@ public class VideoCallingActivity extends TRTCBaseActivity implements View.OnCli
                 (TXCloudVideoView) findViewById(TRTC.getResourceId("trtc_view_8", "id")),
                 (TXCloudVideoView) findViewById(TRTC.getResourceId("trtc_view_9", "id"))
         ));
+
+        mGridLayout = (GridLayout) findViewById(TRTC.getResourceId("grid", "id"));
+        switch4Person();
 
 //        mFloatingView = new FloatingView(getApplicationContext(), R.layout.videocall_view_floating_default);
 //        mFloatingView.setPopupWindow(R.layout.videocall_popup_layout);
@@ -220,12 +229,15 @@ public class VideoCallingActivity extends TRTCBaseActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == TRTC.getResourceId("iv_back", "id")) {
+        if (id == TRTC.getResourceId("iv_back", "id") ||
+                id == TRTC.getResourceId("btn_exit", "id")) {
             finish();
         } else if (id == TRTC.getResourceId("btn_mute_video", "id")) {
             muteVideo();
         } else if (id == TRTC.getResourceId("btn_mute_audio", "id")) {
             muteAudio();
+        } else if (id == TRTC.getResourceId("btn_mute_speaker", "id")) {
+            muteSpeaker();
         } else if (id == TRTC.getResourceId("btn_switch_camera", "id")) {
             switchCamera();
         } else if (id == TRTC.getResourceId("btn_audio_route", "id")) {
@@ -252,10 +264,10 @@ public class VideoCallingActivity extends TRTCBaseActivity implements View.OnCli
         boolean isSelected = mButtonMuteVideo.isSelected();
         if (!isSelected) {
             mTRTCCloud.stopLocalPreview();
-            mButtonMuteVideo.setText(getString(TRTC.getResourceId("videocall_open_camera", "string")));
+            mButtonMuteVideo.setImageResource(TRTC.getResourceId("video_close", "mipmap"));
         } else {
             mTRTCCloud.startLocalPreview(mIsFrontCamera, mTXCVVLocalPreviewView);
-            mButtonMuteVideo.setText(getString(TRTC.getResourceId("videocall_close_camera", "string")));
+            mButtonMuteVideo.setImageResource(TRTC.getResourceId("video_open", "mipmap"));
         }
         mButtonMuteVideo.setSelected(!isSelected);
     }
@@ -264,34 +276,46 @@ public class VideoCallingActivity extends TRTCBaseActivity implements View.OnCli
         boolean isSelected = mButtonMuteAudio.isSelected();
         if (!isSelected) {
             mTRTCCloud.muteLocalAudio(true);
-            mButtonMuteAudio.setText(getString(TRTC.getResourceId("videocall_mute_audio", "string")));
+            mButtonMuteAudio.setImageResource(TRTC.getResourceId("microphone_disable", "mipmap"));
         } else {
             mTRTCCloud.muteLocalAudio(false);
-            mButtonMuteAudio.setText(getString(TRTC.getResourceId("videocall_close_mute_audio", "string")));
+            mButtonMuteAudio.setImageResource(TRTC.getResourceId("microphone", "mipmap"));
         }
         mButtonMuteAudio.setSelected(!isSelected);
+    }
+
+    private void muteSpeaker() {
+        boolean isSelected = mButtonMuteSpeaker.isSelected();
+        if (!isSelected) {
+            mTRTCCloud.muteAllRemoteAudio(true);
+            mButtonMuteSpeaker.setImageResource(TRTC.getResourceId("loudspeaker_disable", "mipmap"));
+        } else {
+            mTRTCCloud.muteAllRemoteAudio(false);
+            mButtonMuteSpeaker.setImageResource(TRTC.getResourceId("loudspeaker", "mipmap"));
+        }
+        mButtonMuteSpeaker.setSelected(!isSelected);
     }
 
     private void switchCamera() {
         mIsFrontCamera = !mIsFrontCamera;
         mTXDeviceManager.switchCamera(mIsFrontCamera);
         if(mIsFrontCamera){
-            mButtonSwitchCamera.setText( getString(TRTC.getResourceId("videocall_user_back_camera", "string")));
+            mButtonSwitchCamera.setImageResource(TRTC.getResourceId("camera_switch_front", "mipmap"));
         }else{
-            mButtonSwitchCamera.setText( getString(TRTC.getResourceId("videocall_user_front_camera", "string")));
+            mButtonSwitchCamera.setImageResource(TRTC.getResourceId("camera_switch_end", "mipmap"));
         }
     }
 
     private void audioRoute() {
-        if(mAudioRouteFlag){
-            mAudioRouteFlag = false;
-            mTXDeviceManager.setAudioRoute(TXDeviceManager.TXAudioRoute.TXAudioRouteEarpiece);
-            mButtonAudioRoute.setText(getString(TRTC.getResourceId("videocall_use_speaker", "string")));
-        }else{
-            mAudioRouteFlag = true;
-            mTXDeviceManager.setAudioRoute(TXDeviceManager.TXAudioRoute.TXAudioRouteSpeakerphone);
-            mButtonAudioRoute.setText(getString(TRTC.getResourceId("videocall_use_receiver", "string")));
-        }
+//        if(mAudioRouteFlag){
+//            mAudioRouteFlag = false;
+//            mTXDeviceManager.setAudioRoute(TXDeviceManager.TXAudioRoute.TXAudioRouteEarpiece);
+//            mButtonAudioRoute.setText(getString(TRTC.getResourceId("videocall_use_speaker", "string")));
+//        }else{
+//            mAudioRouteFlag = true;
+//            mTXDeviceManager.setAudioRoute(TXDeviceManager.TXAudioRoute.TXAudioRouteSpeakerphone);
+//            mButtonAudioRoute.setText(getString(TRTC.getResourceId("videocall_use_receiver", "string")));
+//        }
     }
 
     private class TRTCCloudImplListener extends TRTCCloudListener {
@@ -321,7 +345,11 @@ public class VideoCallingActivity extends TRTCBaseActivity implements View.OnCli
                 mRemoteUidList.remove(index);
                 refreshRemoteVideoViews();
             }
-
+            if (mRemoteUidList.size() > 3) {
+                switch9Person();
+            } else {
+                switch4Person();
+            }
         }
 
         private void refreshRemoteVideoViews() {
@@ -367,5 +395,43 @@ public class VideoCallingActivity extends TRTCBaseActivity implements View.OnCli
 //                mFloatingView.setOnPopupItemClickListener(this);
 //            }
 //        }
+    }
+
+    private void switch4Person() {
+        VideoCallingActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mGridLayout.getRowCount() == 2 && mGridLayout.getColumnCount() == 2) return;
+                mGridLayout.removeAllViewsInLayout();
+                mGridLayout.setRowCount(2);
+                mGridLayout.setColumnCount(2);
+
+                mGridLayout.addView(mTXCVVLocalPreviewView, 0);
+
+                for(int i=0; i<3; i++) {
+                    TXCloudVideoView v = (TXCloudVideoView)mRemoteViewList.get(i);
+                    mGridLayout.addView(v, i+1);
+                }
+            }
+        });
+    }
+
+    private void switch9Person() {
+        VideoCallingActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mGridLayout.getRowCount() == 3 && mGridLayout.getColumnCount() == 3) return;
+                mGridLayout.removeAllViewsInLayout();
+                mGridLayout.setRowCount(3);
+                mGridLayout.setColumnCount(3);
+
+                mGridLayout.addView(mTXCVVLocalPreviewView, 0);
+
+                for(int i=0; i<mRemoteViewList.size(); i++) {
+                    TXCloudVideoView v = (TXCloudVideoView)mRemoteViewList.get(i);
+                    mGridLayout.addView(v, i+1);
+                }
+            }
+        });
     }
 }
