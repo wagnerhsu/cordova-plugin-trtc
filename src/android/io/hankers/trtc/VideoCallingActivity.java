@@ -407,10 +407,14 @@ public class VideoCallingActivity extends TRTCBaseActivity implements View.OnCli
                 mGridLayout.setColumnCount(2);
 
                 mGridLayout.addView(mTXCVVLocalPreviewView, 0);
-
-                mGridLayout.addView(mRemoteViewList.get(1), 1);
-                mGridLayout.addView(mRemoteViewList.get(0), 2);
-                mGridLayout.addView(mRemoteViewList.get(2), 3);
+                try {
+                    mGridLayout.addView(mRemoteViewList.get(1), 1);
+                    mGridLayout.addView(mRemoteViewList.get(0), 2);
+                    mGridLayout.addView(mRemoteViewList.get(2), 3);
+                }
+                catch (Exception exception) {
+                    Log.e("Error to addView",exception.getMessage(),exception);
+                }
             }
         });
     }
