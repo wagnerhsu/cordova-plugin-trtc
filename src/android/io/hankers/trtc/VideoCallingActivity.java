@@ -6,19 +6,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.GridLayout;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import android.widget.*;
 import com.tencent.liteav.TXLiteAVCode;
 import com.tencent.liteav.device.TXDeviceManager;
 import com.tencent.rtmp.ui.TXCloudVideoView;
@@ -48,7 +41,7 @@ import java.util.List;
 
 /**
  * Video Call
- *
+ * <p>
  * Features:
  * - Enter a video call room: {@link VideoCallingActivity#enterRoom()}
  * - Exit a video call room: {@link VideoCallingActivity#exitRoom()}
@@ -58,7 +51,7 @@ import java.util.List;
  * - Turn on/off the mic: {@link VideoCallingActivity#muteAudio()}
  * - Display the video of other users (max. 6) in the room:
  * {@link TRTCCloudImplListener#refreshRemoteVideoViews()}
- *
+ * <p>
  * - For more information, please see the integration document
  * {https://cloud.tencent.com/document/product/647/42045}.
  */
@@ -167,7 +160,7 @@ public class VideoCallingActivity extends TRTCBaseActivity implements View.OnCli
                 (TXCloudVideoView) findViewById(TRTC.getResourceId("trtc_view_9", "id"))));
 
         mGridLayout = (GridLayout) findViewById(TRTC.getResourceId("grid", "id"));
-        switch4Person();
+        switch9Person();
 
         // mFloatingView = new FloatingView(getApplicationContext(),
         // R.layout.videocall_view_floating_default);
@@ -325,6 +318,70 @@ public class VideoCallingActivity extends TRTCBaseActivity implements View.OnCli
         // }
     }
 
+    public void requestDrawOverLays() {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N && !Settings.canDrawOverlays(VideoCallingActivity.this)) {
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:" + VideoCallingActivity.this.getPackageName()));
+            startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
+        } else {
+            showFloatingView();
+        }
+    }
+
+    private void showFloatingView() {
+        // if (mFloatingView != null && !mFloatingView.isShown()) {
+        // if ((null != mTRTCCloud)) {
+        // mFloatingView.show();
+        // mFloatingView.setOnPopupItemClickListener(this);
+        // }
+        // }
+    }
+
+    private void switch9Person() {
+        VideoCallingActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+//                if (mGridLayout.getRowCount() == 3 && mGridLayout.getColumnCount() == 3)
+//                    return;
+                mGridLayout.removeAllViewsInLayout();
+                mGridLayout.setRowCount(3);
+                mGridLayout.setColumnCount(3);
+
+                try {
+                    if (mRemoteUidList.size() == 0) {
+                        mGridLayout.addView(mTXCVVLocalPreviewView, 0);
+                    } else if (mRemoteUidList.size() == 1) {
+                        mGridLayout.setOrientation(GridLayout.VERTICAL);
+                        mGridLayout.addView(mTXCVVLocalPreviewView, 0);
+                        mGridLayout.addView(mRemoteViewList.get(0), 1);
+                    } else if (mRemoteUidList.size() == 2) {
+                        mGridLayout.setOrientation(GridLayout.HORIZONTAL);
+                        mGridLayout.addView(mTXCVVLocalPreviewView, 0);
+                        mGridLayout.addView(mRemoteViewList.get(0), 1);
+                        mGridLayout.addView(mRemoteViewList.get(2), 2);
+                        mGridLayout.addView(mRemoteViewList.get(1), 3);
+                    } else if (mRemoteUidList.size() == 3) {
+                        mGridLayout.setOrientation(GridLayout.HORIZONTAL);
+                        mGridLayout.addView(mTXCVVLocalPreviewView, 0);
+                        mGridLayout.addView(mRemoteViewList.get(0), 1);
+                        mGridLayout.addView(mRemoteViewList.get(4), 2);
+                        mGridLayout.addView(mRemoteViewList.get(1), 3);
+                        mGridLayout.addView(mRemoteViewList.get(2), 4);
+                        mGridLayout.addView(mRemoteViewList.get(5), 5);
+                    } else {
+                        mGridLayout.addView(mTXCVVLocalPreviewView, 0);
+                        for (int i = 0; i < mRemoteViewList.size(); i++) {
+                            TXCloudVideoView v = (TXCloudVideoView) mRemoteViewList.get(i);
+                            mGridLayout.addView(v, i + 1);
+                        }
+                    }
+                } catch (Exception ex) {
+                    Log.e(TAG, "Error to swith9person", ex);
+                }
+            }
+        });
+    }
+
     private class TRTCCloudImplListener extends TRTCCloudListener {
 
         private WeakReference<VideoCallingActivity> mContext;
@@ -353,11 +410,7 @@ public class VideoCallingActivity extends TRTCBaseActivity implements View.OnCli
                 mRemoteUidList.remove(index);
                 refreshRemoteVideoViews();
             }
-            if (mRemoteUidList.size() > 3) {
-                switch9Person();
-            } else {
-                switch4Person();
-            }
+            switch9Person();
         }
 
         private void refreshRemoteVideoViews() {
@@ -385,67 +438,5 @@ public class VideoCallingActivity extends TRTCBaseActivity implements View.OnCli
                 }
             }
         }
-    }
-
-    public void requestDrawOverLays() {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N && !Settings.canDrawOverlays(VideoCallingActivity.this)) {
-            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    Uri.parse("package:" + VideoCallingActivity.this.getPackageName()));
-            startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
-        } else {
-            showFloatingView();
-        }
-    }
-
-    private void showFloatingView() {
-        // if (mFloatingView != null && !mFloatingView.isShown()) {
-        // if ((null != mTRTCCloud)) {
-        // mFloatingView.show();
-        // mFloatingView.setOnPopupItemClickListener(this);
-        // }
-        // }
-    }
-
-    private void switch4Person() {
-        VideoCallingActivity.this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (mGridLayout.getRowCount() == 2 && mGridLayout.getColumnCount() == 2)
-                    return;
-                mGridLayout.removeAllViewsInLayout();
-                mGridLayout.setRowCount(2);
-                mGridLayout.setColumnCount(2);
-
-                mGridLayout.addView(mTXCVVLocalPreviewView, 0);
-
-                try {
-                    mGridLayout.addView(mRemoteViewList.get(1), 1);
-                    mGridLayout.addView(mRemoteViewList.get(0), 2);
-                    mGridLayout.addView(mRemoteViewList.get(2), 3);
-                } catch (Exception exception) {
-                    Log.e(TAG, exception.getMessage(), exception);
-                }
-            }
-        });
-    }
-
-    private void switch9Person() {
-        VideoCallingActivity.this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (mGridLayout.getRowCount() == 3 && mGridLayout.getColumnCount() == 3)
-                    return;
-                mGridLayout.removeAllViewsInLayout();
-                mGridLayout.setRowCount(3);
-                mGridLayout.setColumnCount(3);
-
-                mGridLayout.addView(mTXCVVLocalPreviewView, 0);
-
-                for (int i = 0; i < mRemoteViewList.size(); i++) {
-                    TXCloudVideoView v = (TXCloudVideoView) mRemoteViewList.get(i);
-                    mGridLayout.addView(v, i + 1);
-                }
-            }
-        });
     }
 }
